@@ -33,38 +33,6 @@ public class ControlScript : MonoBehaviour {
 			myAnimator.SetBool ("Jumping", true);
 			Invoke ("StopJumping", 0.1f);
 		}
-		
-		
-		//Controlling an animation with procedural coded motion		
-		//If the Q key is being held down AND no action is currently being performed (we'll go into more about the actions later).
-		if(Input.GetKey("q") && (myAnimator.GetInteger ("CurrentAction") == 0)){
-			
-			//Rotate the character procedurally based on Time.deltaTime.  This will give the illusion of moving
-			//Even though the animations don't have root motion
-			transform.Rotate (Vector3.down * Time.deltaTime * 100.0f);
-			
-			//Also, IF we're currently standing still (both vertically and horizontally)
-			if((Input.GetAxis ("Vertical") == 0f) && (Input.GetAxis ("Horizontal") == 0)){
-				//change the animation to the 'inplace' animation
-				myAnimator.SetBool ("TurningLeft", true);
-			}
-
-		} else {
-			//Else here means if the Q key is not being held down
-			//Then we make sure that we are not playing the turning animation
-			myAnimator.SetBool ("TurningLeft", false);
-		}
-		
-		//Same thing for E key, just rotating the other way!
-		if(Input.GetKey("e") && (myAnimator.GetInteger ("CurrentAction") == 0)){
-			transform.Rotate (Vector3.up * Time.deltaTime * 100.0f);
-			if((Input.GetAxis ("Vertical") == 0f) && (Input.GetAxis ("Horizontal") == 0)){
-				myAnimator.SetBool ("TurningRight", true);
-			}
-
-		} else {
-			myAnimator.SetBool ("TurningRight", false);
-		}
 
 		
 		//Something to keep in mind when controlling motion through code is that it can be difficult to 'match' the animation speed.
@@ -153,20 +121,6 @@ public class ControlScript : MonoBehaviour {
 	//This method is called after jumping is started to stop the jumping!
 	void StopJumping(){
 		myAnimator.SetBool ("Jumping", false);
-	}
-	
-	//We've added some simple GUI labels for our controls to make it easier for you to test out.
-	
-	void OnGUI(){
-		GUI.Label (new Rect(0, 0, 200, 25), "Forward: W");
-        GUI.Label(new Rect(0, 25, 200, 25), "Backward: S");
-        GUI.Label (new Rect(0, 50, 200, 25), "Strafe Left: A");
-		GUI.Label (new Rect(0, 75, 200, 25), "Strafe Right: D");
-		GUI.Label (new Rect(0, 100, 200, 25), "Turn Left: Q");
-		GUI.Label (new Rect(0, 125, 200, 25), "Turn Right: E");
-		GUI.Label (new Rect(0, 150, 200, 25), "Toggle Dance: 1");
-		GUI.Label (new Rect(0, 175, 200, 25), "Toggle Kneeling: 2");
-		GUI.Label (new Rect(0, 200, 200, 25), "Wave (Layer): 3");
 	}
 }
 
