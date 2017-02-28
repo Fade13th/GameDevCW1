@@ -9,6 +9,14 @@ public class UI : MonoBehaviour {
     Slider healthBar, staminaBar, foodBar, waterBar;
     Text healthText, staminaText, foodText, waterText;
 
+
+    private Inventory inventory;
+    private bool inventoryOpen = false;
+
+    public void Start() {
+        inventory = GameObject.Find("Inventory").GetComponent<Inventory>();
+    }
+
     public void initialize (float maxHealth, float maxStamina, float maxFood, float maxWater) {
         healthBar = GameObject.Find("Health").GetComponent<Slider>();
         healthText = GameObject.Find("HealthText").GetComponent<Text>();
@@ -18,6 +26,7 @@ public class UI : MonoBehaviour {
         foodText = GameObject.Find("FoodText").GetComponent<Text>();
         waterBar = GameObject.Find("Water").GetComponent<Slider>();
         waterText = GameObject.Find("WaterText").GetComponent<Text>();
+
 
         healthBar.maxValue = maxHealth;
         staminaBar.maxValue = maxStamina;
@@ -48,4 +57,19 @@ public class UI : MonoBehaviour {
         waterBar.value = x;
         waterText.text = x.ToString();
     }
+
+    public bool isOpen() {
+        return inventoryOpen;
+    }
+
+    public void toggleInventory() {
+        if (inventoryOpen) {
+            inventory.hide();
+            inventoryOpen = false;
+        } else {
+            inventory.show();
+            inventoryOpen = true;
+        }
+    }
+
 }

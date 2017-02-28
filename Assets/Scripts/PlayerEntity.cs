@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerEntity : Entity {
+public class PlayerEntity : HumanoidEntity {
     public float stamina;
     public float maxStamina;
     public float food;
@@ -11,6 +12,8 @@ public class PlayerEntity : Entity {
     public float maxWater;
 
     private UI ui;
+
+    GameObject rightHand;
 
     void Start() {
         health = maxHealth;
@@ -25,6 +28,7 @@ public class PlayerEntity : Entity {
         ui.setStamina(stamina);
         ui.setFood(food);
         ui.setWater(water);
+
     }
 
     override
@@ -93,5 +97,23 @@ public class PlayerEntity : Entity {
             water -= val;
 
         ui.setWater(water);
+    }
+
+    public void useItem(Item item) {
+        item.Use(this);
+    }
+
+    internal void equipItem(Item i) {
+        EquipSlot slot = GameObject.Find(i.equipSlot).GetComponent<EquipSlot>();
+        unequip(slot);
+        GameObject obj = GameObject.Instantiate(i.equippedItem, slot.transform, false);
+        slot.equippedItem = obj;
+    }
+
+    internal void unequip(EquipSlot equipSlot) {
+        if (equipSlot.equippedItem != null) {
+            GameObject.Destroy(equipSlot.equippedItem);
+            equipSlot.equippedItem = null;
+        }
     }
 }

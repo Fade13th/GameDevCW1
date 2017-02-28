@@ -11,6 +11,9 @@ public class Inventory : MonoBehaviour {
     Image image;
     Text detail;
     Button useButton;
+    Button equipButton;
+
+    public PlayerEntity player; 
 
     CanvasGroup group;
 
@@ -25,6 +28,7 @@ public class Inventory : MonoBehaviour {
         image = GameObject.Find("inv_Image").GetComponent<Image>();
         detail = GameObject.Find("inv_Detail").GetComponent<Text>();
         useButton = GameObject.Find("inv_use").GetComponent<Button>();
+        equipButton = GameObject.Find("inv_equip").GetComponent<Button>();
 
         group = GetComponent<CanvasGroup>();
 
@@ -104,18 +108,21 @@ public class Inventory : MonoBehaviour {
         currentItem = item;
         detail.text = allItems[item].description;
 
-        if (allItems[item].usable)
-            useButton.enabled = true;
-        else
-            useButton.enabled = false;
+        useButton.enabled = allItems[item].usable;
+        equipButton.enabled = allItems[item].equipable;
     }
 
     public void useItem() {
         Item i = allItems[currentItem];
-        i.Use();
+        player.useItem(i);
 
         removeItem(i);
         detail.text = "";
         useButton.enabled = false;
+    }
+
+    public void equipItem() {
+        Item i = allItems[currentItem];
+        player.equipItem(i);
     }
 }

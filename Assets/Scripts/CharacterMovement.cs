@@ -9,6 +9,8 @@ public class CharacterMovement : MonoBehaviour {
     public float jumpSpeed = 8.0F;
     public float gravity = 20.0F;
 
+    private float speed;
+
     private MouseAim aim;
     private VerticalAim vaim;
     private ThrowRock fire;
@@ -20,31 +22,11 @@ public class CharacterMovement : MonoBehaviour {
         aim = GetComponent<MouseAim>();
         vaim = GameObject.Find("CameraContainer").GetComponent<VerticalAim>();
         fire = GetComponent<ThrowRock>();
+        speed = walkSpeed;
     }
 
     private Vector3 moveDirection = Vector3.zero;
     void Update() {
-        float speed;
-
-        if (Input.GetButton("Sprint"))
-            speed = runSpeed;
-        else
-            speed = walkSpeed;
-
-        if (Input.GetButtonDown("Inventory")) {
-            if (!aim.enabled) {
-                inv.hide();
-                aim.enabled = true;
-                vaim.enabled = true;
-                fire.enabled = true;
-            }
-            else {
-                inv.show();
-                aim.enabled = false;
-                vaim.enabled = false;
-                fire.enabled = false;
-            }
-        }
 
         CharacterController controller = GetComponent<CharacterController>();
         if (controller.isGrounded)
@@ -58,6 +40,16 @@ public class CharacterMovement : MonoBehaviour {
         }
         moveDirection.y -= gravity * Time.deltaTime;
         controller.Move(moveDirection * Time.deltaTime);
+    }
+
+    public void toggleSprint(bool sprint) {
+        speed = sprint ? runSpeed : walkSpeed;
+    }
+
+    public void enableMouse(bool enable) {
+        aim.enabled = enable;
+        vaim.enabled = enable;
+        //fire.enabled = enable;
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit) {

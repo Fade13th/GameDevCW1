@@ -9,13 +9,16 @@ public class ControlScript : MonoBehaviour {
 	//First, we will create a reference called myAnimator so we can talk to the Animator component on the game object.
 	//The Animator is what listens to our instructions and tells the mesh which animation to use.
 	private Animator myAnimator;
+    private CharacterMovement characterMovement;
+    private UI uInterface;
 
 	// The start method is called when the script is initalized, before other stuff in the scripts start happening.
 	void Start () {
 		//We have a reference called myAnimator but we need to fill that reference with an Animator component.
 		//We can do that by 'getting' the animator that is on the same game object this script is appleid to.
 		myAnimator = GetComponent<Animator>();
-	
+        characterMovement = GameObject.Find("Player").GetComponent<CharacterMovement>();
+        uInterface = GameObject.Find("UICanvas").GetComponent<UI>();
 	}
 	
 	// Update is called once per frame so this is a great place to listen for input from the player to see if they have
@@ -34,21 +37,35 @@ public class ControlScript : MonoBehaviour {
 			Invoke ("StopJumping", 0.1f);
 		}
 
-		
-		//Something to keep in mind when controlling motion through code is that it can be difficult to 'match' the animation speed.
-		//For example, our rotation speed is handled by the "Vector3 * Time.deltaTime * 100.0f" portion.  Changing that float
-		//to another number will decrease or increase your rate of rotation and it may not match your animation anymore.
-		
-	
-		
-		
-		//Toggleable Animations
-		//Sometimes you may want to turn an animation on and off yourself.
-		//Here we want the behaviour to be a little different.  We'll check if the input button is pressed and then check what the current state is.
-		//If the CurrentAction is 0, we will change it to 2. If it is 2, we will change it to 0.  This creates a toggle effect when the button is pressed.
-		//With this method we aren't looking for a button being held down OR being released, but just using the key down to listen for key presses.
-		
-		if(Input.GetKeyDown ("1")){
+        
+        if (Input.GetButton("Fire1")) 
+            myAnimator.SetBool("Attacking", true);
+        else
+            myAnimator.SetBool("Attacking", false);
+
+        characterMovement.toggleSprint(Input.GetButton("Sprint"));
+
+        if(Input.GetButtonDown("Inventory")) {
+            uInterface.toggleInventory();
+            characterMovement.enableMouse(!uInterface.isOpen());
+            myAnimator.SetBool("UIOpen", uInterface.isOpen());
+        }
+
+
+        //Something to keep in mind when controlling motion through code is that it can be difficult to 'match' the animation speed.
+        //For example, our rotation speed is handled by the "Vector3 * Time.deltaTime * 100.0f" portion.  Changing that float
+        //to another number will decrease or increase your rate of rotation and it may not match your animation anymore.
+
+
+
+
+        //Toggleable Animations
+        //Sometimes you may want to turn an animation on and off yourself.
+        //Here we want the behaviour to be a little different.  We'll check if the input button is pressed and then check what the current state is.
+        //If the CurrentAction is 0, we will change it to 2. If it is 2, we will change it to 0.  This creates a toggle effect when the button is pressed.
+        //With this method we aren't looking for a button being held down OR being released, but just using the key down to listen for key presses.
+
+        if (Input.GetKeyDown ("1")){
 			if(myAnimator.GetInteger("CurrentAction") == 0){
 				myAnimator.SetInteger("CurrentAction", 1);				
 			} else if (myAnimator.GetInteger ("CurrentAction") == 1){
