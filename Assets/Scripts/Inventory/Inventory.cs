@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour {
-    Dictionary<string, int> contents;
+    internal Dictionary<string, int> contents;
     Dictionary<string, Item> allItems;
 
     ScrollRect list;
@@ -24,9 +24,9 @@ public class Inventory : MonoBehaviour {
         contents = new Dictionary<string, int>();
         allItems = loadItems();
 
-        list = GameObject.Find("inv_Scroll").GetComponent<ScrollRect>();
-        image = GameObject.Find("inv_Image").GetComponent<Image>();
-        detail = GameObject.Find("inv_Detail").GetComponent<Text>();
+        list = GameObject.Find("inv_scroll").GetComponent<ScrollRect>();
+        image = GameObject.Find("inv_image").GetComponent<Image>();
+        detail = GameObject.Find("inv_detail").GetComponent<Text>();
         useButton = GameObject.Find("inv_use").GetComponent<Button>();
         equipButton = GameObject.Find("inv_equip").GetComponent<Button>();
 
@@ -35,15 +35,13 @@ public class Inventory : MonoBehaviour {
         hide();
 	}
 
-    private Dictionary<string, Item> loadItems() {
+    internal static Dictionary<string, Item> loadItems() {
         Dictionary<string, Item> map = new Dictionary<string, Item>();
 
         Object[] fileEntries = Resources.LoadAll("Prefabs/Items", typeof(GameObject));
 
         foreach (Object o in fileEntries) {
             Item i = ((GameObject)o).GetComponent<Item>();
-            print(i.itemName);
-            print(i.description);
             map.Add(i.name, i);
         }
 
@@ -60,24 +58,27 @@ public class Inventory : MonoBehaviour {
         group.blocksRaycasts = false;
     }
 	
-	public void addItem(Item i) {
-        string item = i.gameObject.GetComponent<Item>().itemName;
-        if (contents.ContainsKey(item))
-            contents[item] = contents[item] + 1;
+	public void addItem(string name) {
+        if (contents.ContainsKey(name))
+            contents[name] = contents[name] + 1;
         else
-            contents.Add(item, 1);
+            contents.Add(name, 1);
 
         updateInv();
     }
 
-    public void removeItem(Item i) {
-        string item = i.gameObject.GetComponent<Item>().itemName;
-        if (contents[item] > 1)
-            contents[item] = contents[item] - 1;
+    public void removeItem(string name) {
+        if (contents[name] > 1)
+            contents[name] = contents[name] - 1;
         else
-            contents.Remove(item);
+            contents.Remove(name);
 
         updateInv();
+    }
+
+    public void removeItem(string name, int off) {
+        for (int i = 0; i < off; i++)
+            removeItem(name);
     }
 
     private void updateInv() {
@@ -109,14 +110,17 @@ public class Inventory : MonoBehaviour {
         detail.text = allItems[item].description;
 
         useButton.enabled = allItems[item].usable;
+        useButton.GetComponent<Image>().color = allItems[item].usable ? Color.white : Color.gray;
+
         equipButton.enabled = allItems[item].equipable;
+        equipButton.GetComponent<Image>().color = allItems[item].equipable ? Color.white : Color.gray;
     }
 
     public void useItem() {
         Item i = allItems[currentItem];
         player.useItem(i);
 
-        removeItem(i);
+        removeItem(i.itemName);
         detail.text = "";
         useButton.enabled = false;
     }
@@ -124,5 +128,11 @@ public class Inventory : MonoBehaviour {
     public void equipItem() {
         Item i = allItems[currentItem];
         player.equipItem(i);
+    }
+
+    public bool hasItem(string name, int off) {
+        if (contents.ContainsKey(name))
+            return contents[name] >= off;
+        else return false;
     }
 }

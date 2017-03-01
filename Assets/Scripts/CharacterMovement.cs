@@ -56,7 +56,8 @@ public class CharacterMovement : MonoBehaviour {
         //Pick up item
         Item item = hit.gameObject.GetComponent<Item>();
         if (item != null) {
-            inv.addItem(item);
+            print(item.itemName);
+            inv.addItem(item.itemName);
             Destroy(item.gameObject);
         }
     }

@@ -136,15 +136,19 @@
     <Compile Include="Assets\Sardine\Scripts\SardineUserController.cs" />
     <Compile Include="Assets\Scripts\CharacterMovement.cs" />
     <Compile Include="Assets\Scripts\Entity.cs" />
+    <Compile Include="Assets\Scripts\HumanoidEntity.cs" />
+    <Compile Include="Assets\Scripts\Inventory\CraftRow.cs" />
+    <Compile Include="Assets\Scripts\Inventory\Crafting.cs" />
+    <Compile Include="Assets\Scripts\Inventory\EquipSlot.cs" />
     <Compile Include="Assets\Scripts\Inventory\Inventory.cs" />
     <Compile Include="Assets\Scripts\Inventory\Item.cs" />
     <Compile Include="Assets\Scripts\Inventory\ItemRow.cs" />
-    <Compile Include="Assets\Scripts\Inventory\Items\Apple.cs" />
-    <Compile Include="Assets\Scripts\Inventory\Items\Banana.cs" />
-    <Compile Include="Assets\Scripts\Inventory\Items\Pear.cs" />
+    <Compile Include="Assets\Scripts\Inventory\Items\FoodItem.cs" />
     <Compile Include="Assets\Scripts\MouseAim.cs" />
     <Compile Include="Assets\Scripts\PlayerEntity.cs" />
+    <Compile Include="Assets\Scripts\StaticEntity.cs" />
     <Compile Include="Assets\Scripts\ThrowRock.cs" />
+    <Compile Include="Assets\Scripts\Tool.cs" />
     <Compile Include="Assets\Scripts\UI.cs" />
     <Compile Include="Assets\Scripts\VerticalAim.cs" />
   </ItemGroup>

@@ -51,6 +51,12 @@ public class ControlScript : MonoBehaviour {
             myAnimator.SetBool("UIOpen", uInterface.isOpen());
         }
 
+        if (Input.GetButtonDown("Crafting")) {
+            uInterface.toggleCrafting();
+            characterMovement.enableMouse(!uInterface.isOpen());
+            myAnimator.SetBool("UIOpen", uInterface.isOpen());
+        }
+
 
         //Something to keep in mind when controlling motion through code is that it can be difficult to 'match' the animation speed.
         //For example, our rotation speed is handled by the "Vector3 * Time.deltaTime * 100.0f" portion.  Changing that float

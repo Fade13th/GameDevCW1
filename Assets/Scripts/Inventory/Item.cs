@@ -8,19 +8,24 @@ public class Item : MonoBehaviour {
     public string description;
     public bool usable = false;
     public bool equipable = true;
+    public bool craftable = false;
+    public string craftComps;
 
     public GameObject equippedItem;
     public string equipSlot;
 
     protected Inventory inv;
+    protected Crafting craft;
 
     void Start() {
         inv = GameObject.Find("Player").GetComponent<Inventory>();
+        craft = GameObject.Find("Crafting").GetComponent<Crafting>();
+        craftComps = craftComps.Replace(" ", "");
     }
 
     void OnCollisionEnter(Collision other) {
         if (other.gameObject.name == "Player")
-            inv.addItem(this);
+            inv.addItem(this.itemName);
     }
 
     virtual
