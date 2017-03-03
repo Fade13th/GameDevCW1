@@ -10,7 +10,6 @@ public class Tool : MonoBehaviour {
 
     public void OnCollisionEnter(Collision collision) {
         Entity entity = collision.gameObject.GetComponent<Entity>();
-        print(entity.name);
 
         if (entity != null)
             entity.dealDamage(impact, slash, puncture, chop);

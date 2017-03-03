@@ -12,7 +12,7 @@ public class Entity : MonoBehaviour {
     public float chopResist = 1;
 
     public float hitDelay = 0.3f;
-    private float hitTime = 0f;
+    protected float hitTime = 0f;
 
     public GameObject dropItemDeath;
     public int dropRateDeath = 0;
@@ -42,27 +42,40 @@ public class Entity : MonoBehaviour {
             removeHealth(impact * impactResist + slash * slashResist + puncture * punctureResist + chop * chopResist);
             hitTime = Time.time + hitDelay;
             dropHit();
-            print(health);
         }
     }
 
-    private void die() {
+    protected void die() {
         dropDeath();
         Destroy(this.gameObject);
     }
 
-    private void dropHit() {
+    protected void dropHit() {
+        bool renderer = this.GetComponent<Renderer>() ? true : false;
+
         if (dropRateHit > 0) { 
             for (int i = 0; i < dropRateHit; i++) {
-                GameObject.Instantiate(dropItemHit, this.transform.position, this.transform.rotation);
+                if (renderer)
+                    GameObject.Instantiate(dropItemHit, this.transform.position + this.GetComponent<Renderer>().bounds.size.y * Vector3.up, this.transform.rotation);
+                else
+                    GameObject.Instantiate(dropItemHit, this.transform.position, this.transform.rotation);
             }
         }
     }
 
-    private void dropDeath() {
+    protected void dropDeath() {
+        bool renderer = this.GetComponent<Renderer>() ? true : false;
+
         if (dropRateDeath > 0) {
             for (int i = 0; i < dropRateDeath; i++) {
-                GameObject.Instantiate(dropItemDeath, this.transform.position, this.transform.rotation);
+                GameObject obj;
+                if (renderer)
+                    obj = GameObject.Instantiate(dropItemDeath, this.transform.position + this.GetComponent<Renderer>().bounds.size.y * Vector3.up, this.transform.rotation);
+                else
+                    obj = GameObject.Instantiate(dropItemDeath, this.transform.position, this.transform.rotation);
+
+                Vector3 velocity = new Vector3(0.0f, 0.0f, Random.Range(6.0f, 1.0f));
+                obj.GetComponent<Rigidbody>().AddForce(velocity);
             }
         }
     }
