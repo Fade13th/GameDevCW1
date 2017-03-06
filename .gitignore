@@ -8,7 +8,6 @@
 sysinfo.txt
 *.stackdump
 *.userprefs
-[Pp]roject[Ss]ettings/
  
 # ============================================= #
 # Visual Studio / MonoDevelop / Rider generated #
