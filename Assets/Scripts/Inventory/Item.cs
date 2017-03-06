@@ -23,11 +23,6 @@ public class Item : MonoBehaviour {
         craftComps = craftComps.Replace(" ", "");
     }
 
-    void OnCollisionEnter(Collision other) {
-        if (other.gameObject.name == "Player")
-            inv.addItem(this.itemName);
-    }
-
     virtual
     public void Use(PlayerEntity player) { }
 }

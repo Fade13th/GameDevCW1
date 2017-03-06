@@ -40,6 +40,7 @@ public class CharacterMovement : MonoBehaviour {
         }
         moveDirection.y -= gravity * Time.deltaTime;
         controller.Move(moveDirection * Time.deltaTime);
+
     }
 
     public void toggleSprint(bool sprint) {
@@ -52,13 +53,4 @@ public class CharacterMovement : MonoBehaviour {
         //fire.enabled = enable;
     }
 
-    void OnControllerColliderHit(ControllerColliderHit hit) {
-        //Pick up item
-        Item item = hit.gameObject.GetComponent<Item>();
-        if (item != null) {
-            print(item.itemName);
-            inv.addItem(item.itemName);
-            Destroy(item.gameObject);
-        }
-    }
 }

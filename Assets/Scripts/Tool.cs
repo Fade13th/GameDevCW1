@@ -8,10 +8,17 @@ public class Tool : MonoBehaviour {
     public float puncture;
     public float chop;
 
+	private bool isLive = false;
+
     public void OnCollisionEnter(Collision collision) {
         Entity entity = collision.gameObject.GetComponent<Entity>();
 
-        if (entity != null)
-            entity.dealDamage(impact, slash, puncture, chop);
+		if (isLive && entity != null) {
+			entity.dealDamage (impact, slash, puncture, chop);
+		}
     }
+
+	public void enable(bool bEnabled) {
+		this.isLive = bEnabled;
+	}
 }
