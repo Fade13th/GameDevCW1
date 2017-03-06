@@ -81,6 +81,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\EnableToolHit.cs" />
     <Compile Include="Assets\FGC\Animation\Mecanim\ControlScript.cs" />
     <Compile Include="Assets\FGC\Scripts\FGC_addItem.cs" />
     <Compile Include="Assets\FGC\Volund-Morph3D\UniqueShadow\UniqueShadow.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Assets\Scripts\Inventory\Item.cs" />
     <Compile Include="Assets\Scripts\Inventory\ItemRow.cs" />
     <Compile Include="Assets\Scripts\Inventory\Items\FoodItem.cs" />
+    <Compile Include="Assets\Scripts\Inventory\PlayerItemPickup.cs" />
     <Compile Include="Assets\Scripts\MouseAim.cs" />
     <Compile Include="Assets\Scripts\PlayerEntity.cs" />
     <Compile Include="Assets\Scripts\StaticEntity.cs" />
