@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class UI : MonoBehaviour {
     public GameObject character;
 
-    Slider healthBar, staminaBar, foodBar, waterBar;
-    Text healthText, staminaText, foodText, waterText;
+    Slider healthBar, fatigueBar, energyBar, foodBar, waterBar;
+    Text healthText, fatigueText, energyText, foodText, waterText;
 
     Button inv_btn;
     Button crf_btn;
@@ -31,11 +31,13 @@ public class UI : MonoBehaviour {
         crafting = GameObject.Find("Crafting").GetComponent<Crafting>();
     }
 
-    public void initialize (float maxHealth, float maxStamina, float maxFood, float maxWater) {
+    public void initialize (float maxHealth, float maxFatigue, float maxEnergy, float maxFood, float maxWater) {
         healthBar = GameObject.Find("Health").GetComponent<Slider>();
         healthText = GameObject.Find("HealthText").GetComponent<Text>();
-        staminaBar = GameObject.Find("Stamina").GetComponent<Slider>();
-        staminaText = GameObject.Find("StaminaText").GetComponent<Text>();
+        fatigueBar = GameObject.Find("Fatigue").GetComponent<Slider>();
+        fatigueText = GameObject.Find("FatigueText").GetComponent<Text>();
+        energyBar = GameObject.Find("Energy").GetComponent<Slider>();
+        energyText = GameObject.Find("EnergyText").GetComponent<Text>();
         foodBar = GameObject.Find("Food").GetComponent<Slider>();
         foodText = GameObject.Find("FoodText").GetComponent<Text>();
         waterBar = GameObject.Find("Water").GetComponent<Slider>();
@@ -43,7 +45,8 @@ public class UI : MonoBehaviour {
 
 
         healthBar.maxValue = maxHealth;
-        staminaBar.maxValue = maxStamina;
+        fatigueBar.maxValue = maxFatigue;
+        energyBar.maxValue = maxEnergy;
         foodBar.maxValue = maxFood;
         waterBar.maxValue = maxWater;
     }
@@ -54,10 +57,16 @@ public class UI : MonoBehaviour {
         healthText.text = x.ToString();
     }
 
-    public void setStamina(float stamina) {
+    public void setFatigue(float stamina) {
         float x = Mathf.Ceil(stamina);
-        staminaBar.value = x;
-        staminaText.text = x.ToString();
+        fatigueBar.value = x;
+        fatigueText.text = x.ToString();
+    }
+
+    public void setEnergy(float energy) {
+        float x = Mathf.Ceil(energy);
+        energyBar.value = x;
+        energyText.text = x.ToString();
     }
 
     public void setFood(float food) {

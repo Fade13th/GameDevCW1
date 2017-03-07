@@ -17,7 +17,14 @@ public class CharacterMovement : MonoBehaviour {
 
     private Inventory inv;
 
+    private PlayerEntity player;
+
+    public float swingCost;
+    protected float swingTime = 0f;
+
     void Start() {
+        player = GameObject.Find("Player").GetComponent<PlayerEntity>();
+
         inv = GameObject.Find("Inventory").GetComponent<Inventory>();
         aim = GetComponent<MouseAim>();
         vaim = GameObject.Find("CameraContainer").GetComponent<VerticalAim>();
@@ -53,4 +60,14 @@ public class CharacterMovement : MonoBehaviour {
         //fire.enabled = enable;
     }
 
+    internal bool canSwing() {
+        return player.energy >= swingCost;
+    }
+
+    internal void swing() {
+        if (Time.time > swingTime) {
+            player.removeEnergy(swingCost);
+            swingTime = Time.time + 2.4f;
+        }
+    }
 }

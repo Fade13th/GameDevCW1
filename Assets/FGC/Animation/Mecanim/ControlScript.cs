@@ -37,11 +37,13 @@ public class ControlScript : MonoBehaviour {
 			Invoke ("StopJumping", 0.1f);
 		}
 
-        
-        if (Input.GetButton("Fire1")) 
+
+        if (characterMovement.canSwing() && Input.GetButton("Fire1")) {
             myAnimator.SetBool("Attacking", true);
+            characterMovement.swing();
+        }
         else
-            myAnimator.SetBool("Attacking", false);
+            myAnimator.SetBool("Attacking", false);            
 
         characterMovement.toggleSprint(Input.GetButton("Sprint"));
 
