@@ -17,7 +17,8 @@ public class Inventory : MonoBehaviour {
 
     CanvasGroup group;
 
-    string currentItem;
+    internal string currentItem;
+    internal string equippedItem;
 
 	// Use this for initialization
 	void Start () {
@@ -128,6 +129,7 @@ public class Inventory : MonoBehaviour {
     public void equipItem() {
         Item i = allItems[currentItem];
         player.equipItem(i);
+        equippedItem = i.itemName;
     }
 
     public bool hasItem(string name, int off) {

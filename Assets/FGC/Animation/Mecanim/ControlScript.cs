@@ -47,6 +47,9 @@ public class ControlScript : MonoBehaviour {
 
         characterMovement.toggleSprint(Input.GetButton("Sprint"));
 
+        if (Input.GetButtonDown("Cancel"))
+            characterMovement.toggleMouse();
+
         if(Input.GetButtonDown("Inventory")) {
             uInterface.toggleInventory();
             characterMovement.enableMouse(!uInterface.isOpen());

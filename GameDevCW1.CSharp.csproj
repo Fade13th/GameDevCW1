@@ -151,6 +151,7 @@
     <Compile Include="Assets\Scripts\StaticEntity.cs" />
     <Compile Include="Assets\Scripts\ThrowRock.cs" />
     <Compile Include="Assets\Scripts\Tool.cs" />
+    <Compile Include="Assets\Scripts\Tutorial.cs" />
     <Compile Include="Assets\Scripts\UI.cs" />
     <Compile Include="Assets\Scripts\VerticalAim.cs" />
   </ItemGroup>

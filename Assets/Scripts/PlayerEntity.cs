@@ -43,7 +43,6 @@ public class PlayerEntity : HumanoidEntity {
     }
 
     void Update() {
-        print("Update");
         if (Time.time > regenTime) {
             if (health < maxHealth)
                 regenHealth();

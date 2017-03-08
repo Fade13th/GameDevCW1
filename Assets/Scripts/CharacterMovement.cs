@@ -60,6 +60,11 @@ public class CharacterMovement : MonoBehaviour {
         //fire.enabled = enable;
     }
 
+    public void toggleMouse() {
+        aim.enabled = !aim.enabled;
+        vaim.enabled = !vaim.enabled;
+    }
+
     internal bool canSwing() {
         return player.energy >= swingCost;
     }
