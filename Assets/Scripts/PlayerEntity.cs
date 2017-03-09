@@ -107,7 +107,7 @@ public class PlayerEntity : HumanoidEntity {
     override
     public void removeHealth(float val) {
         if (health - val <= 0)
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(2);
         else
             health -= val;
 

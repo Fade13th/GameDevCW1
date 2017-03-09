@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class TryAgain : MonoBehaviour {
+public class PlayButton : MonoBehaviour {
 
-	public void retry() {
+	public void play() {
         SceneManager.LoadScene(1);
     }
 }
