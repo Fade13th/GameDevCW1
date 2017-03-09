@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Crafting : MonoBehaviour {
+
     Dictionary<string, Item> allItems;
 
     CanvasGroup group;
@@ -70,7 +71,7 @@ public class Crafting : MonoBehaviour {
     public void Craft() {
         Item item = allItems[currentItem];
 
-        string[] comps = item.craftComps.Replace(" ","").Split(',');
+        string[] comps = item.craftComps.Split(',');
 
         foreach (string s in comps) {
             string[] split = s.Split(':');
@@ -88,7 +89,7 @@ public class Crafting : MonoBehaviour {
         bool hasComponents = true;
         string comps = "";
 
-        string[] compsSplit = allItems[item].craftComps.Replace(" ", "").Split(',');
+        string[] compsSplit = allItems[item].craftComps.Split(',');
 
         foreach (string s in compsSplit) {
             string[] split = s.Split(':');

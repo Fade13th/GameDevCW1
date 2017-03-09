@@ -11,6 +11,8 @@ public class ControlScript : MonoBehaviour {
 	private Animator myAnimator;
     private CharacterMovement characterMovement;
     private UI uInterface;
+    
+    private bool freeMouse = false;
 
 	// The start method is called when the script is initalized, before other stuff in the scripts start happening.
 	void Start () {
@@ -38,27 +40,28 @@ public class ControlScript : MonoBehaviour {
 		}
 
 
-        if (characterMovement.canSwing() && Input.GetButton("Fire1")) {
+        if (Input.GetButton("Fire1") && mouseEnabled() && characterMovement.swing()) {
             myAnimator.SetBool("Attacking", true);
-            characterMovement.swing();
         }
         else
             myAnimator.SetBool("Attacking", false);            
 
         characterMovement.toggleSprint(Input.GetButton("Sprint"));
 
-        if (Input.GetButtonDown("Cancel"))
-            characterMovement.toggleMouse();
+        if (Input.GetButtonDown("Cancel")) {
+            freeMouse = !freeMouse;
+            characterMovement.enableMouse(mouseEnabled());
+        }
 
-        if(Input.GetButtonDown("Inventory")) {
+        if (Input.GetButtonDown("Inventory")) {
             uInterface.toggleInventory();
-            characterMovement.enableMouse(!uInterface.isOpen());
+            characterMovement.enableMouse(mouseEnabled());
             myAnimator.SetBool("UIOpen", uInterface.isOpen());
         }
 
         if (Input.GetButtonDown("Crafting")) {
             uInterface.toggleCrafting();
-            characterMovement.enableMouse(!uInterface.isOpen());
+            characterMovement.enableMouse(mouseEnabled());
             myAnimator.SetBool("UIOpen", uInterface.isOpen());
         }
 
@@ -150,6 +153,10 @@ public class ControlScript : MonoBehaviour {
 	void StopJumping(){
 		myAnimator.SetBool ("Jumping", false);
 	}
+
+    public bool mouseEnabled() {
+        return !uInterface.isOpen() && !freeMouse; 
+    }
 }
 
 /*

@@ -61,6 +61,10 @@ public class Tutorial : MonoBehaviour {
         return inv.hasItem(targetItem, 1);
     }
 
+    private bool WaitForNot() {
+        return !inv.hasItem(targetItem, 1);
+    }
+
     private bool EquipItem() {
         return inv.equippedItem.Equals(targetItem);
     }
@@ -102,37 +106,112 @@ public class Tutorial : MonoBehaviour {
                 break;
 
             case 6:
-                text.text = "The first step to surviving in the wilderness is to gather rocks to use as a makeshift tool and for use in crafting. \n\nObjective: Find a rock.";
-                water_highlight.enabled = false;
+                text.text = "You'll need to gather water to survive. Walk out into a river or lake (you'll have to go a few steps before the water's deep enough) and you should see water appear in your inventory. \n\nObjective: Find a body of water.";
                 enableNext(false);
+                waiting = true;
+                targetItem = "Water";
+                waitFunc = WaitForItem;
+                break;
+
+            case 7:
+                text.text = "Open your inventory with the 'I' key, select the water and click use to refill some of your water bar";
+                enableNext(true);
+                break;
+
+            case 8:
+                text.text = "You'll want to take some water with you. You may have noticed an empty canteen in your inventory, you can fill it with water using the crafting menu. Open the crafting menu with 'U' and craft a canteen full of water. \n\nObjective: craft a filled canteen.";
+                enableNext(false);
+                waiting = true;
+                targetItem = "Canteen (Water)";
+                waitFunc = WaitForItem;
+                break;
+
+            case 9:
+                text.text = "Now you have water, you'll need to build tools to survive in the wilderness. The first step is to gather rocks to use as a makeshift tool and for use in crafting. \n\nObjective: Find a rock.";
+                water_highlight.enabled = false;
                 waiting = true;
                 targetItem = "Dwayne";
                 waitFunc = WaitForItem;
                 break;
 
-            case 7:
-                text.text = "Now open your inventory with 'I' and select your rock. Click 'Equip' to weild it as a makeshift tool. \n\nObjective: Equip a rock.";
+            case 10:
+                text.text = "Now open your inventory and select your rock. Click 'Equip' to weild it as a makeshift tool. \n\nObjective: Equip a rock.";
                 waiting = true;
                 targetItem = "Dwayne";
                 waitFunc = EquipItem;
                 break;
 
-            case 8:
+            case 11:
                 text.text = "Try hitting a tree with your new tool. Using items like rocks are much less efficient that real tools, but try to break off and gather some sticks. \n\nObjective: Collect a stick by attacking a tree.";
                 waiting = true;
                 targetItem = "Stick";
                 waitFunc = WaitForItem;
                 break;
 
-            case 9:
+            case 12:
                 text.text = "Now you can start crafting! Open the crafting menu with 'U' and combine your rock and stick into an axe. Equip your new axe to make harvesting food much more efficient. \n\nObjective: Craft and equip an axe.";
                 waiting = true;
                 targetItem = "Axe";
                 waitFunc = EquipItem;
                 break;
+           
+            case 13:
+                text.text = "Now you'll need to gather food. Try cutting down a tree with your new axe to get some apples. \n\nObjective: Cut down trees to find some apples.";
+                waiting = true;
+                targetItem = "Apple";
+                waitFunc = WaitForItem;
+                break;
 
-            case 10:
-                text.text = "Now you'll need to gather food and water.";
+            case 14:
+                text.text = "Fruit is useful as a food source, but is much less efficient than meat. Find some wild animals and attack them with your axe to get some. \n\nObjective: Hunt for meat.";
+                waiting = true;
+                targetItem = "Raw Meat";
+                waitFunc = WaitForItem;
+                break;
+
+            case 15:
+                text.text = "Some animals also drop useful biproducts like leather. Make sure to collect it: you don't know when it'll come in handy. \n\nObjective: Collect leather from your recent kill";
+                waiting = true;
+                targetItem = "Leather";
+                waitFunc = WaitForItem;
+                break;
+
+            case 16:
+                text.text = "Raw meat doesn't fill up as much food as cooked meat. You'll need a source of fire. Check the crafting menu and collect the resources needed to craft a campfire and craft it. \n\nObjective: Craft a campfire";
+                waiting = true;
+                targetItem = "Campfire";
+                waitFunc = WaitForItem;
+                break;
+
+            case 17:
+                text.text = "Place your new campfire by clicking 'Use' on it in your inventory.\n\nObjective: Place the campfire";
+                waiting = true;
+                targetItem = "Campfire";
+                waitFunc = WaitForNot;
+                break;
+
+            case 18:
+                text.text = "Stand near your campfire to gain access to 'Fire' as a crafting material. Combine this with some raw meat to cook it. \n\nObjective: Cook some raw meat.";
+                waiting = true;
+                targetItem = "Cooked Meat";
+                waitFunc = WaitForItem;
+                break;
+
+            case 19:
+                text.text = "When your fatigue builds up you'll need to rest to recover. To do so, you'll need a tent. Find the components and craft a tent. \n\nObjective: Craft a tent.";
+                waiting = true;
+                targetItem = "Tent";
+                waitFunc = WaitForItem;
+                break;
+
+            case 20:
+                text.text = "To sleep in your tent, get close and select 'Use' on the 'Nearby Tent' item in your inventory. This will restore your fatigue, energy and health at the cost of some food and water. \n\nObjective: Sleep in your tent.";
+                enableNext(true);
+                break;
+
+            case 21:
+                text.text = "You now know the basics you need to survive in this world. Continue exploring to discover new lands, wild and possibly hostile creatures, and eventually find your way back to civilisation.";
+                enableNext(false);
                 break;
 
             default:

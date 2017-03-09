@@ -2,15 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerEntity : HumanoidEntity {
-    internal float fatigue;
+    public float fatigue;
     public float maxFatigue;
-    internal float energy;
+    public float energy;
     public float maxEnergy;
-    internal float food;
+    public float food;
     public float maxFood;
-    internal float water;
+    public float water;
     public float maxWater;
 
     public float healthRegenStep;
@@ -18,20 +19,26 @@ public class PlayerEntity : HumanoidEntity {
     public float energyRegenStep;
     public float energyRegenCost;
 
+    public float regenThreshold = 20;
+
+    public float foodDrain;
+    public float waterDrain;
+    public float fatigueBuildup;
+
     public float regenDelay = 0.3f;
     protected float regenTime = 0f;
 
+    private float energyTime;
+    public float energyDelay = 1f;
+
     private UI ui;
+
+    public Inventory inv;
 
     GameObject rightHand;
 
     void Start() {
-        health = 80;
-        fatigue = 0;
-        energy = 10;
-        food = 40;
-        water = maxWater;
-
+        
         ui = new UI();
         ui.initialize(maxHealth, maxFatigue, maxEnergy, maxFood, maxWater);
 
@@ -44,34 +51,43 @@ public class PlayerEntity : HumanoidEntity {
 
     void Update() {
         if (Time.time > regenTime) {
+
+            removeFood(foodDrain);
+            removeWater(waterDrain);
+            addFatigue(fatigueBuildup);
+
             if (health < maxHealth)
                 regenHealth();
 
             if (energy < maxEnergy)
                 regenEnergy();
 
+            if (fatigue == maxFatigue)
+                PassOut();
+
             regenTime = Time.time + regenDelay;
         }
+        
     }
 
     private void regenHealth() {
-        if (food >= healthRegenCost && water >= healthRegenCost) {
-            health = Mathf.Clamp(health + healthRegenStep, 0, maxHealth);
-            food = Mathf.Clamp(food - healthRegenCost, 0, maxFood);
-            water = Mathf.Clamp(water - healthRegenCost, 0, maxWater);
+        if (food >= regenThreshold && water >= regenThreshold) {
+            addHealth(healthRegenStep);
+            removeFood(healthRegenCost);
+            removeWater(healthRegenCost);
 
             ui.setHealth(health);
             ui.setFood(food);
             ui.setWater(water);
-        }
+        } 
     }
 
     private void regenEnergy() {
-        if (fatigue < maxFatigue) {
+        if (Time.time > energyTime && fatigue < maxFatigue) {
             float healthRatio = health / maxHealth;
 
-            fatigue = Mathf.Clamp(fatigue + energyRegenCost * healthRatio, 0, maxFatigue);
-            energy = Mathf.Clamp(energy + energyRegenStep * healthRatio, 0, maxEnergy);
+            addFatigue(energyRegenCost);
+            addEnergy(energyRegenStep * healthRatio);
 
             ui.setFatigue(fatigue);
             ui.setEnergy(energy);
@@ -80,14 +96,20 @@ public class PlayerEntity : HumanoidEntity {
 
     override
     public void addHealth(float val) {
-        addHealth(val);
+        if (health + val <= maxHealth)
+            health += val;
+        else
+            health = maxHealth;
 
         ui.setHealth(health);
     }
 
     override
     public void removeHealth(float val) {
-        removeHealth(val);
+        if (health - val <= 0)
+            SceneManager.LoadScene(1);
+        else
+            health -= val;
 
         ui.setHealth(health);
     }
@@ -119,13 +141,14 @@ public class PlayerEntity : HumanoidEntity {
         ui.setEnergy(energy);
     }
 
-    public void removeEnergy(float val) {
-        if (energy - val <= 0)
-            energy = 0;
-        else
+    public bool removeEnergy(float val) {
+        if (energy >= val) {
             energy -= val;
-
-        ui.setEnergy(energy);
+            energyTime = Time.time + energyDelay;
+            ui.setEnergy(energy);
+            return true;
+        }
+        return false;
     }
 
     public void addFood(float val) {
@@ -138,8 +161,10 @@ public class PlayerEntity : HumanoidEntity {
     }
 
     public void removeFood(float val) {
-        if (food - val <= 0)
+        if (food - val <= 0) {
+            removeHealth(val - food);
             food = 0;
+        }
         else
             food -= val;
 
@@ -156,8 +181,10 @@ public class PlayerEntity : HumanoidEntity {
     }
 
     public void removeWater(float val) {
-        if (water - val <= 0)
+        if (water - val <= 0) {
+            removeHealth(val - water);
             water = 0;
+        }
         else
             water -= val;
 
@@ -180,5 +207,14 @@ public class PlayerEntity : HumanoidEntity {
             GameObject.Destroy(equipSlot.equippedItem);
             equipSlot.equippedItem = null;
         }
+    }
+
+    internal void PassOut() {
+        Fader fade = GameObject.Find("FadePanel").GetComponent<Fader>();
+        fade.Fade();
+
+        removeFatigue(40);
+        removeFood(25);
+        removeWater(25);
     }
 }

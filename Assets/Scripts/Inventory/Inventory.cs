@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour {
+
+    public const float waterCraftingLevel = 21.3f;
+
     internal Dictionary<string, int> contents;
     Dictionary<string, Item> allItems;
 
@@ -34,7 +37,19 @@ public class Inventory : MonoBehaviour {
         group = GetComponent<CanvasGroup>();
 
         hide();
+
+        addItem("Canteen (Empty)");
 	}
+
+    void Update() {
+        if (player.transform.position.y <= waterCraftingLevel) {
+            if (!hasItem("Water", 1)) {
+                addItem("Water");
+            }
+        } else if (hasItem("Water", 1)) {
+            removeItem("Water");
+        }
+    }
 
     internal static Dictionary<string, Item> loadItems() {
         Dictionary<string, Item> map = new Dictionary<string, Item>();
@@ -43,7 +58,7 @@ public class Inventory : MonoBehaviour {
 
         foreach (Object o in fileEntries) {
             Item i = ((GameObject)o).GetComponent<Item>();
-            map.Add(i.name, i);
+            map.Add(i.itemName, i);
         }
 
         return map;
@@ -66,6 +81,12 @@ public class Inventory : MonoBehaviour {
             contents.Add(name, 1);
 
         updateInv();
+    }
+
+    public void addItem(string name, int num) {
+        for (int i = 0; i < num; i++) {
+            addItem(name);
+        }
     }
 
     public void removeItem(string name) {

@@ -10,6 +10,7 @@ public class Item : MonoBehaviour {
     public bool equipable = true;
     public bool craftable = false;
     public string craftComps;
+    public string useDrops;
 
     public GameObject equippedItem;
     public string equipSlot;
@@ -24,5 +25,16 @@ public class Item : MonoBehaviour {
     }
 
     virtual
-    public void Use(PlayerEntity player) { }
+    public void Use(PlayerEntity player) {
+
+        if (!useDrops.Equals("")) {
+
+            string[] comps = useDrops.Split(',');
+
+            foreach (string s in comps) {
+                string[] split = s.Split(':');
+                player.inv.addItem(split[0], int.Parse(split[1]));
+            }
+        }
+    }
 }

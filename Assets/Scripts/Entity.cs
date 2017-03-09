@@ -14,11 +14,10 @@ public class Entity : MonoBehaviour {
     public float hitDelay = 0.3f;
     protected float hitTime = 0f;
 
-    public GameObject dropItemDeath;
-    public int dropRateDeath = 0;
-
     public GameObject dropItemHit;
     public int dropRateHit = 0;
+    
+    public GameObject[] drops;
 
     virtual
 	public void addHealth(float val) {
@@ -64,19 +63,20 @@ public class Entity : MonoBehaviour {
     }
 
     protected void dropDeath() {
+
         bool renderer = this.GetComponent<Renderer>() ? true : false;
+        
+        foreach (GameObject dropItem in drops) {
+            if (dropItem == null) continue;
+            GameObject obj;
+            if (renderer)
+                obj = GameObject.Instantiate(dropItem, this.transform.position + this.GetComponent<Renderer>().bounds.size.y * Vector3.up, this.transform.rotation);
+            else
+                obj = GameObject.Instantiate(dropItem, this.transform.position, this.transform.rotation);
 
-        if (dropRateDeath > 0) {
-            for (int i = 0; i < dropRateDeath; i++) {
-                GameObject obj;
-                if (renderer)
-                    obj = GameObject.Instantiate(dropItemDeath, this.transform.position + this.GetComponent<Renderer>().bounds.size.y * Vector3.up, this.transform.rotation);
-                else
-                    obj = GameObject.Instantiate(dropItemDeath, this.transform.position, this.transform.rotation);
-
-                Vector3 velocity = new Vector3(0.0f, 0.0f, Random.Range(6.0f, 1.0f));
-                obj.GetComponent<Rigidbody>().AddForce(velocity);
-            }
+            Vector3 velocity = new Vector3(0.0f, 0.0f, Random.Range(6.0f, 1.0f));
+            obj.GetComponent<Rigidbody>().AddForce(velocity);
         }
+        
     }
 }

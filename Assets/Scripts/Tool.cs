@@ -10,12 +10,13 @@ public class Tool : MonoBehaviour {
 
 	private bool isLive = false;
 
-    public void OnCollisionEnter(Collision collision) {
-        Entity entity = collision.gameObject.GetComponent<Entity>();
-
-		if (isLive && entity != null) {
-			entity.dealDamage (impact, slash, puncture, chop);
-		}
+    public void OnTriggerEnter(Collider collision) {
+        if (isLive) {
+            Entity entity = collision.gameObject.GetComponent<Entity>();
+            if (entity != null && entity != GameObject.Find("Player").GetComponent<Entity>()) {
+                entity.dealDamage(impact, slash, puncture, chop);
+            }
+        }
     }
 
 	public void enable(bool bEnabled) {

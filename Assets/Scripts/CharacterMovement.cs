@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour {
 
+    public const float waterBuoyancyLevel = 20f;
+
     public float walkSpeed = 6.0F;
     public float runSpeed = 12.0F;
     public float jumpSpeed = 8.0F;
@@ -40,6 +42,7 @@ public class CharacterMovement : MonoBehaviour {
         {
             moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
             moveDirection = transform.TransformDirection(moveDirection);
+            
             moveDirection *= speed;
             if (Input.GetButton("Jump"))
                 moveDirection.y = jumpSpeed;
@@ -65,14 +68,11 @@ public class CharacterMovement : MonoBehaviour {
         vaim.enabled = !vaim.enabled;
     }
 
-    internal bool canSwing() {
-        return player.energy >= swingCost;
-    }
-
-    internal void swing() {
-        if (Time.time > swingTime) {
-            player.removeEnergy(swingCost);
+    internal bool swing() {
+        if (Time.time > swingTime && player.removeEnergy(swingCost)) {
             swingTime = Time.time + 2.4f;
+            return true;
         }
+        return false;
     }
 }
