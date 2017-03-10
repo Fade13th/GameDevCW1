@@ -21,6 +21,7 @@ public class ControlScript : MonoBehaviour {
 		myAnimator = GetComponent<Animator>();
         characterMovement = GameObject.Find("Player").GetComponent<CharacterMovement>();
         uInterface = GameObject.Find("UICanvas").GetComponent<UI>();
+		lockCursor (true);
 	}
 	
 	// Update is called once per frame so this is a great place to listen for input from the player to see if they have
@@ -50,19 +51,22 @@ public class ControlScript : MonoBehaviour {
 
         if (Input.GetButtonDown("Cancel")) {
             freeMouse = !freeMouse;
-            characterMovement.enableMouse(mouseEnabled());
+			characterMovement.enableMouse(mouseEnabled());
+			lockCursor(mouseEnabled());
         }
 
         if (Input.GetButtonDown("Inventory")) {
             uInterface.toggleInventory();
             characterMovement.enableMouse(mouseEnabled());
-            myAnimator.SetBool("UIOpen", uInterface.isOpen());
+			myAnimator.SetBool("UIOpen", uInterface.isOpen());
+			lockCursor(mouseEnabled());
         }
 
         if (Input.GetButtonDown("Crafting")) {
             uInterface.toggleCrafting();
             characterMovement.enableMouse(mouseEnabled());
-            myAnimator.SetBool("UIOpen", uInterface.isOpen());
+			myAnimator.SetBool("UIOpen", uInterface.isOpen());
+			lockCursor(mouseEnabled());
         }
 
 
@@ -157,6 +161,14 @@ public class ControlScript : MonoBehaviour {
     public bool mouseEnabled() {
         return !uInterface.isOpen() && !freeMouse; 
     }
+
+	private void lockCursor(bool bLock) {
+		if (bLock) {
+			Cursor.lockState = CursorLockMode.Locked;
+		} else {
+			Cursor.lockState = CursorLockMode.None;
+		}
+	}
 }
 
 /*
